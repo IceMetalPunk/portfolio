@@ -1,0 +1,29 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "My personal portfolio, interactive.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build-client": "cd ./client && npm run build",
+    "build-server": "cd ./server && tsc",
+    "build": "npm run build-client && npm run build-server",
+    "start": "cd ./server && node ./dist/index.js",
+    "build-and-start": "npm run build && npm run start"
+  },
+  "keywords": [
+    "portfolio"
+  ],
+  "author": "IceMetalPunk",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "node-postgres": "^0.6.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.17",
+    "typescript": "^5.8.3"
+  }
+}
