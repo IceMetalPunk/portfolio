@@ -3,6 +3,7 @@ import { Request, Response, Router } from 'express';
 import { Pool, QueryResult } from 'pg';
 import {
   YTResultItem,
+  YTResultsGenerator,
   YTSnippet,
   YTThumbnail,
   YTThumbnailList,
@@ -18,7 +19,7 @@ const pool = new Pool({ connectionString });
 async function* getYouTubeResults<T extends YTSnippet>(
   url: string,
   params: Record<string, string>
-): AsyncGenerator<YTResultItem<T>, void, boolean> {
+): YTResultsGenerator<T> {
   const query = new URLSearchParams(params);
   query.set('channelId', process.env.YT_CHANNEL_ID as string);
   query.set('key', process.env.YT_API_KEY as string);
@@ -57,9 +58,11 @@ const getBestThumbnail = (thumbnails: YTThumbnailList): YTThumbnail | null => {
   return null;
 };
 const updateVideoCache = async (
-  videos: Array<YTResultItem<YTVideoSnippet>>
-): Promise<void> => {
-  for (let video of videos) {
+  videos: YTResultsGenerator<YTVideoSnippet>
+): Promise<number> => {
+  let resultingCount = 0;
+  for await (let video of videos) {
+    ++resultingCount;
     const id: string = (video.id as YTVideoId).videoId;
     const title: string = video.snippet.title;
     const description: string = video.snippet.description;
@@ -78,6 +81,7 @@ const updateVideoCache = async (
     new Date(),
     1,
   ]);
+  return resultingCount;
 };
 
 APIRouter.get('/getLatestVideos', async (_: Request, res: Response) => {
@@ -101,11 +105,17 @@ APIRouter.get('/getLatestVideos', async (_: Request, res: Response) => {
     // lastCheck.setDate(lastCheck.getDate() - 1000); // DEBUG CODE TO PULL OLDER VIDEOS
     params.publishedAfter = lastCheck.toISOString();
   }
-  const videos: Array<YTResultItem<YTVideoSnippet>> = await Array.fromAsync(
-    getYouTubeResults<YTVideoSnippet>(url, params)
-  );
-  console.log('Found ' + videos.length.toString() + ' new videos. Cacheing...');
-  await updateVideoCache(videos);
+  const videos: YTResultsGenerator<YTVideoSnippet> =
+    getYouTubeResults<YTVideoSnippet>(url, params);
+  const newResultCount: number = await updateVideoCache(videos);
+  if (newResultCount > 0) {
+    console.log(
+      'Found ' + newResultCount.toString() + ' new videos and cached them.'
+    );
+  } else {
+    console.log('No new videos; returning only cached data.');
+  }
+
   const allVideos: QueryResult = await pool.query(
     'SELECT * FROM synthia_videos'
   );

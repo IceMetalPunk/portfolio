@@ -42,3 +42,4 @@ export interface YTResultItem<T extends YTSnippet> {
     id: string | YTVideoId;
     snippet: T;
 }
+export type YTResultsGenerator<T extends YTSnippet> = AsyncGenerator<YTResultItem<T>, void, void>;
