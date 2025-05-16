@@ -24,8 +24,10 @@ async function* getYouTubeResults<T extends YTSnippet>(
   const query = new URLSearchParams(params);
   query.set('channelId', process.env.YT_CHANNEL_ID as string);
   query.set('key', process.env.YT_API_KEY as string);
+  const fullURL: URL = new URL(url);
   while (true) {
-    const response = await fetch(url + '?' + query.toString());
+    fullURL.search = query.toString();
+    const response = await fetch(fullURL);
     const json: Record<string, unknown> = (await response.json()) as Record<
       string,
       unknown

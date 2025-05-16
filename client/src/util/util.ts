@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 export const useFetchJson = (
   url: string,
   queryParams?: Record<string, string>,
-  postBody?: Record<string, string>
+  postBody?: Record<string, string>,
+  baseURL: string = window.location.origin
 ): [Record<string, unknown> | null, boolean, unknown | null] => {
   const [json, setJson] = useState<Record<string, unknown> | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -12,10 +13,10 @@ export const useFetchJson = (
   useEffect(() => {
     setFetching(true);
     const controller: AbortController = new AbortController();
-    let fullURL = url;
+    const fullURL: URL = new URL(url, baseURL);
     if (queryParams) {
       const query: URLSearchParams = new URLSearchParams(queryParams);
-      fullURL = url + '?' + query.toString();
+      fullURL.search = query.toString();
     }
 
     let fetchOptions: RequestInit = {
