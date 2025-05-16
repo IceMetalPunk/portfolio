@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { Request, Response, Router } from 'express';
-import { Pool, QueryResult } from 'pg';
+import { Pool, QueryResult, QueryResultRow } from 'pg';
 import {
   YTResultItem,
   YTResultsGenerator,
@@ -10,6 +10,7 @@ import {
   YTVideoId,
   YTVideoSnippet,
 } from 'types.js';
+import { numericQueryParam, sanitizeDbValuesForHTML } from '../util/util.js';
 config();
 export const APIRouter: Router = Router();
 
@@ -84,7 +85,7 @@ const updateVideoCache = async (
   return resultingCount;
 };
 
-APIRouter.get('/getLatestVideos', async (_: Request, res: Response) => {
+APIRouter.get('/getLatestVideos', async (req: Request, res: Response) => {
   const url: string = 'https://www.googleapis.com/youtube/v3/search';
   const params: Record<string, string> = {
     part: 'snippet',
@@ -116,8 +117,12 @@ APIRouter.get('/getLatestVideos', async (_: Request, res: Response) => {
     console.log('No new videos; returning only cached data.');
   }
 
-  const allVideos: QueryResult = await pool.query(
-    'SELECT * FROM synthia_videos'
+  const limit: number = numericQueryParam(req, 'limit', 0);
+  const offset: number = (numericQueryParam(req, 'page', 1) - 1) * limit;
+  const allVideos: QueryResult<QueryResultRow> = await pool.query(
+    'SELECT * FROM synthia_videos ORDER BY published_at DESC LIMIT $1 OFFSET $2',
+    [limit > 0 ? limit : null, offset]
   );
+  sanitizeDbValuesForHTML(allVideos);
   res.json(allVideos.rows);
 });
