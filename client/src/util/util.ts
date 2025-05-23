@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
 
+type JsonResult =
+  | Record<string, unknown>
+  | Array<Record<string, unknown> | string | number>
+  | null;
+
 export const useFetchJson = (
   url: string,
   queryParams?: Record<string, string>,
   postBody?: Record<string, string>,
   baseURL: string = window.location.origin
-): [Record<string, unknown> | null, boolean, unknown | null] => {
-  const [json, setJson] = useState<Record<string, unknown> | null>(null);
-  const [fetching, setFetching] = useState<boolean>(false);
+): [JsonResult, boolean, unknown | null] => {
+  const [json, setJson] = useState<JsonResult>(null);
+  const [fetching, setFetching] = useState<boolean>(true);
   const [error, setError] = useState<unknown | null>(null);
 
   useEffect(() => {
@@ -34,7 +39,7 @@ export const useFetchJson = (
     }
     fetch(fullURL, fetchOptions)
       .then((res: Response) => res.json())
-      .then((decoded: Record<string, unknown>) => {
+      .then((decoded: JsonResult) => {
         setJson(decoded);
         setError(null);
       })
