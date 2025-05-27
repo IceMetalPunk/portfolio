@@ -45,6 +45,38 @@ async function* getYouTubeResults<T extends YTSnippet>(
   }
 }
 
+async function* getYouTubeResultsByIds<T extends YTSnippet>(
+  url: string,
+  params: Record<string, string>,
+  ids: Array<string>
+): YTResultsGenerator<T> {
+  const query = new URLSearchParams(params);
+  query.set('key', process.env.YT_API_KEY as string);
+  const fullURL: URL = new URL(url);
+  let idList: Array<string> = [...ids];
+  while (true) {
+    const currentIdSet: Array<string> = idList.splice(0, 50);
+    query.set('id', currentIdSet.join(','));
+    fullURL.search = query.toString();
+    const response = await fetch(fullURL);
+    const json: Record<string, unknown> = (await response.json()) as Record<
+      string,
+      unknown
+    >;
+    if (json.items) {
+      for (let item of json.items as Array<YTResultItem<T>>) {
+        yield item;
+      }
+    }
+    if (json.nextPageToken) {
+      idList = [...ids];
+      query.set('pageToken', json.nextPageToken as string);
+    } else if (idList.length <= 0) {
+      return;
+    }
+  }
+}
+
 const getBestThumbnail = (thumbnails: YTThumbnailList): YTThumbnail | null => {
   const descendingQualityOrder: Array<keyof YTThumbnailList> = [
     'maxres',
@@ -61,12 +93,18 @@ const getBestThumbnail = (thumbnails: YTThumbnailList): YTThumbnail | null => {
   return null;
 };
 const updateVideoCache = async (
-  videos: YTResultsGenerator<YTVideoSnippet>
-): Promise<number> => {
-  let resultingCount = 0;
+  videos: YTResultsGenerator<YTVideoSnippet>,
+  videoIdType: 'object' | 'string' = 'object'
+): Promise<Array<string>> => {
+  const cachedIds: Array<string> = [];
   for await (let video of videos) {
-    ++resultingCount;
-    const id: string = (video.id as YTVideoId).videoId;
+    let id: string;
+    if (videoIdType === 'object') {
+      id = (video.id as YTVideoId).videoId;
+    } else {
+      id = video.id as string;
+    }
+    cachedIds.push(id);
     const title: string = video.snippet.title;
     const description: string = video.snippet.description;
     const thumbnail: YTThumbnail | null = getBestThumbnail(
@@ -74,9 +112,10 @@ const updateVideoCache = async (
     );
     const thumbnailUrl: string = thumbnail?.url ?? '';
     const etag: string = video.etag;
-    const publishedTime: string = video.snippet.publishTime;
+    const publishedTime: string =
+      video.snippet.publishTime ?? video.snippet.publishedAt;
     await pool.query(
-      'INSERT INTO synthia_videos (id, title, description, thumbnail_url, published_at, etag) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO NOTHING',
+      'INSERT INTO synthia_videos (id, title, description, thumbnail_url, published_at, etag) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title=$2, description=$3, thumbnail_url=$4, etag=$6',
       [id, title, description, thumbnailUrl, publishedTime, etag]
     );
   }
@@ -84,7 +123,23 @@ const updateVideoCache = async (
     new Date(),
     1,
   ]);
-  return resultingCount;
+  return cachedIds;
+};
+
+const updateVideoDescriptions = async (
+  allIds: Array<string>
+): Promise<void> => {
+  if (allIds.length <= 0) {
+    return;
+  }
+  const url: string = 'https://www.googleapis.com/youtube/v3/videos';
+  const params: Record<string, string> = {
+    part: 'snippet',
+  };
+
+  const videoDescriptions: YTResultsGenerator<YTVideoSnippet> =
+    getYouTubeResultsByIds<YTVideoSnippet>(url, params, allIds);
+  await updateVideoCache(videoDescriptions, 'string');
 };
 
 APIRouter.get('/getLatestVideos', async (req: Request, res: Response) => {
@@ -105,15 +160,15 @@ APIRouter.get('/getLatestVideos', async (req: Request, res: Response) => {
     lastCheckResult.rowCount > 0
   ) {
     const lastCheck: Date = lastCheckResult.rows[0].last_video_check;
-    // lastCheck.setDate(lastCheck.getDate() - 1000); // DEBUG CODE TO PULL OLDER VIDEOS
     params.publishedAfter = lastCheck.toISOString();
   }
   const videos: YTResultsGenerator<YTVideoSnippet> =
     getYouTubeResults<YTVideoSnippet>(url, params);
-  const newResultCount: number = await updateVideoCache(videos);
-  if (newResultCount > 0) {
+  const newResultIds: Array<string> = await updateVideoCache(videos);
+  if (newResultIds.length > 0) {
+    await updateVideoDescriptions(newResultIds);
     console.log(
-      'Found ' + newResultCount.toString() + ' new videos and cached them.'
+      'Found ' + newResultIds.length.toString() + ' new videos and cached them.'
     );
   } else {
     console.log('No new videos; returning only cached data.');
