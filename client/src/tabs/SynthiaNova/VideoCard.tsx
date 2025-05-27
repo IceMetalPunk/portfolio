@@ -1,5 +1,5 @@
 import { decode } from 'html-entities';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 type VideoCardProps = {
   id: string;
   title: string;
@@ -7,6 +7,7 @@ type VideoCardProps = {
   description?: string;
 };
 export const VideoCard = ({ id, title, thumbnail_url }: VideoCardProps) => {
+  const [showEmbedded, setShowEmbedded] = useState<boolean>(false);
   const cleanTitle = useMemo(() => {
     const cleaned: string = decode(title, { level: 'all' }).split(
       ' - Synthia Nova'
@@ -14,13 +15,32 @@ export const VideoCard = ({ id, title, thumbnail_url }: VideoCardProps) => {
     const matchQuotedTitle: RegExpMatchArray | null = cleaned.match(/".*?"/i);
     return matchQuotedTitle ? matchQuotedTitle[0] : cleaned;
   }, [title]);
+
   return (
     <div className='video-card'>
+      {showEmbedded && (
+        <iframe
+          src={`https://www.youtube.com/embed/${encodeURIComponent(
+            id
+          )}?autoplay=1`}
+          title='YouTube video player'
+          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+          referrerPolicy='strict-origin-when-cross-origin'
+          allowFullScreen={true}
+          className='video-embed'
+        ></iframe>
+      )}
+      {!showEmbedded && (
+        <img
+          src={thumbnail_url}
+          className='video-thumbnail'
+          onClick={() => setShowEmbedded(true)}
+        />
+      )}
       <a
         target='_blank'
         href={`https://www.youtube.com/watch?v=${encodeURIComponent(id)}`}
       >
-        <img src={thumbnail_url} className='video-thumbnail' />
         <strong>{cleanTitle}</strong>
       </a>
     </div>

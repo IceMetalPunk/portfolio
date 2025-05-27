@@ -87,6 +87,12 @@ button:focus-visible {
 .video-card .video-thumbnail {
   max-width: 200px;
   border-radius: 0.5em;
+  cursor: pointer;
+}
+.video-card .video-embed {
+  max-width: 200px;
+  border-radius: 0.5em;
+  border: 0px;
 }
 .video-card strong {
   display: inline-block;
