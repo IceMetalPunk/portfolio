@@ -1,12 +1,21 @@
+import './VideoCard.css';
 import { decode } from 'html-entities';
 import { useMemo, useState } from 'react';
+import type { LyricsPanelProps } from './LyricsPanel';
 type VideoCardProps = {
   id: string;
   title: string;
   thumbnail_url: string;
-  description?: string;
+  setLyricsData: React.Dispatch<React.SetStateAction<LyricsPanelProps>>;
+  description: string;
 };
-export const VideoCard = ({ id, title, thumbnail_url }: VideoCardProps) => {
+export const VideoCard = ({
+  id,
+  title,
+  thumbnail_url,
+  setLyricsData,
+  description,
+}: VideoCardProps) => {
   const [showEmbedded, setShowEmbedded] = useState<boolean>(false);
   const cleanTitle = useMemo(() => {
     const cleaned: string = decode(title, { level: 'all' }).split(
@@ -42,6 +51,19 @@ export const VideoCard = ({ id, title, thumbnail_url }: VideoCardProps) => {
         href={`https://www.youtube.com/watch?v=${encodeURIComponent(id)}`}
       >
         <strong>{cleanTitle}</strong>
+      </a>
+      <br />
+      <a
+        className='lyric-link'
+        onClick={() =>
+          setLyricsData({
+            fullTitle: cleanTitle,
+            description,
+            open: true,
+          })
+        }
+      >
+        Lyrics
       </a>
     </div>
   );

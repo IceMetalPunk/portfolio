@@ -1,13 +1,14 @@
 import './GithubCard.css';
+interface GithubCardProps {
+  projectName: string;
+  repoName: string;
+  description?: string;
+}
 export const GithubCard = ({
   projectName,
   repoName,
   description,
-}: {
-  projectName: string;
-  repoName: string;
-  description?: string;
-}) => {
+}: GithubCardProps) => {
   return (
     <div className='github-card'>
       <div className='title'>{projectName}</div>

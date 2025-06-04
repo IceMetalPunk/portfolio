@@ -1,6 +1,8 @@
+import './TabSynthiaNova.css';
 import { useCallback, useState } from 'react';
 import { useFetchJson } from '../../util/util';
 import { VideoCard } from './VideoCard';
+import { LyricsPanel, type LyricsPanelProps } from './LyricsPanel';
 
 type VideoResult = {
   id: string;
@@ -13,6 +15,19 @@ type VideoResult = {
 };
 
 export const TabSynthiaNova = () => {
+  const [lyricsData, setLyricsData] = useState<LyricsPanelProps>({
+    fullTitle: 'N/A',
+    description: '',
+    open: false,
+  });
+  const toggleLyricsPanel = useCallback(() => {
+    setLyricsData((current: LyricsPanelProps) => {
+      return {
+        ...current,
+        open: !current.open,
+      };
+    });
+  }, []);
   const [fetchParams, setFetchParams] = useState<Record<string, string>>({
     limit: '15',
     page: '1',
@@ -41,24 +56,31 @@ export const TabSynthiaNova = () => {
   }
 
   return (
-    <div className='video-card-container'>
-      {(videoResults as Array<VideoResult>).map((record: VideoResult) => {
-        return (
-          <VideoCard
-            id={record.id}
-            title={record.title}
-            thumbnail_url={record.thumbnail_url}
-          />
-        );
-      })}
-      <div className='video-card-footer'>
-        {parseInt(fetchParams.page) > 1 && (
-          <a onClick={() => changePage(-1)}>«</a>
-        )}
-        Page {fetchParams.page}
-        {(videoResults as Array<VideoResult>).length >=
-          parseInt(fetchParams.limit) && <a onClick={() => changePage(1)}>»</a>}
+    <div className='video-container'>
+      <div className='video-card-container'>
+        {(videoResults as Array<VideoResult>).map((record: VideoResult) => {
+          return (
+            <VideoCard
+              id={record.id}
+              title={record.title}
+              thumbnail_url={record.thumbnail_url}
+              description={record.description ?? ''}
+              setLyricsData={setLyricsData}
+            />
+          );
+        })}
+        <div className='video-card-footer'>
+          {parseInt(fetchParams.page) > 1 && (
+            <a onClick={() => changePage(-1)}>«</a>
+          )}
+          Page {fetchParams.page}
+          {(videoResults as Array<VideoResult>).length >=
+            parseInt(fetchParams.limit) && (
+            <a onClick={() => changePage(1)}>»</a>
+          )}
+        </div>
       </div>
+      <LyricsPanel {...lyricsData} togglePanelCallback={toggleLyricsPanel} />
     </div>
   );
 };

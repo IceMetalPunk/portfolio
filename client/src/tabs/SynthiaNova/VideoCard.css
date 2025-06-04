@@ -1,0 +1,28 @@
+.video-card {
+  padding: 0.5em;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 0.5em;
+  opacity: 0.65;
+  transition: opacity 0.5s;
+  background-color: #cccccc;
+}
+.video-card:hover {
+  opacity: 1;
+}
+.video-card .video-thumbnail {
+  max-width: 200px;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+.video-card .video-embed {
+  max-width: 200px;
+  border-radius: 0.5em;
+  border: 0px;
+}
+.video-card strong {
+  display: inline-block;
+}
+.video-card .lyric-link {
+  cursor: pointer;
+  text-decoration: underline;
+}

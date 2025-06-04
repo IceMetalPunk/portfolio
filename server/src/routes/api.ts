@@ -170,8 +170,6 @@ APIRouter.get('/getLatestVideos', async (req: Request, res: Response) => {
     console.log(
       'Found ' + newResultIds.length.toString() + ' new videos and cached them.'
     );
-  } else {
-    console.log('No new videos; returning only cached data.');
   }
 
   const limit: number = numericQueryParam(req, 'limit', 0);

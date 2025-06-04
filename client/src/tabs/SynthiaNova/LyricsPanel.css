@@ -1,0 +1,28 @@
+.lyric-panel {
+  padding-inline: 0rem;
+  position: absolute;
+  right: 0px;
+  bottom: -0.5em;
+  top: -1.5em;
+  width: 0%;
+  opacity: 0;
+  border-inline-start: 1px solid #000000;
+  background-color: #ffffff;
+  transition: width 1s linear, opacity 1s ease-in-out, padding-inline 1s linear;
+}
+.lyric-panel.open {
+  width: 75%;
+  opacity: 1;
+  padding-inline: 1rem;
+}
+.lyric-panel .close-button {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+}
+.lyric-panel .lyrics {
+  white-space: pre-line;
+  overflow-y: auto;
+  height: calc(100% - 3em);
+}

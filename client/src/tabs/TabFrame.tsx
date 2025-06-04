@@ -1,17 +1,19 @@
 import type { JSX } from 'react';
 import { GithubCard } from './GithubCard';
 
+interface TabFrameProps {
+  projectName: string;
+  repoName: string;
+  description?: string;
+  children: JSX.Element;
+}
+
 export const TabFrame = ({
   projectName,
   repoName,
   description,
   children,
-}: {
-  projectName: string;
-  repoName: string;
-  description?: string;
-  children: JSX.Element;
-}) => {
+}: TabFrameProps) => {
   return (
     <>
       <GithubCard
