@@ -15,6 +15,7 @@ type VideoResult = {
 };
 
 export const TabSynthiaNova = () => {
+  const [nowPlayingId, setNowPlayingId] = useState<string>('');
   const [lyricsData, setLyricsData] = useState<LyricsPanelProps>({
     fullTitle: 'N/A',
     description: '',
@@ -37,6 +38,7 @@ export const TabSynthiaNova = () => {
     fetchParams
   );
   const changePage = useCallback((amount: number) => {
+    setNowPlayingId('');
     setFetchParams((previous) => {
       return {
         ...previous,
@@ -62,10 +64,13 @@ export const TabSynthiaNova = () => {
           return (
             <VideoCard
               id={record.id}
+              key={record.id}
               title={record.title}
               thumbnail_url={record.thumbnail_url}
               description={record.description ?? ''}
               setLyricsData={setLyricsData}
+              isPlaying={nowPlayingId === record.id}
+              startPlaying={() => setNowPlayingId(record.id)}
             />
           );
         })}

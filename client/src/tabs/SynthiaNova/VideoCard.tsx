@@ -1,13 +1,16 @@
-import './VideoCard.css';
+import classNames from 'classnames';
 import { decode } from 'html-entities';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { LyricsPanelProps } from './LyricsPanel';
+import './VideoCard.css';
 type VideoCardProps = {
   id: string;
   title: string;
   thumbnail_url: string;
   setLyricsData: React.Dispatch<React.SetStateAction<LyricsPanelProps>>;
   description: string;
+  isPlaying: boolean;
+  startPlaying: () => void;
 };
 export const VideoCard = ({
   id,
@@ -15,8 +18,9 @@ export const VideoCard = ({
   thumbnail_url,
   setLyricsData,
   description,
+  isPlaying = false,
+  startPlaying,
 }: VideoCardProps) => {
-  const [showEmbedded, setShowEmbedded] = useState<boolean>(false);
   const cleanTitle = useMemo(() => {
     const cleaned: string = decode(title, { level: 'all' }).split(
       ' - Synthia Nova'
@@ -26,8 +30,13 @@ export const VideoCard = ({
   }, [title]);
 
   return (
-    <div className='video-card'>
-      {showEmbedded && (
+    <div
+      className={classNames({
+        'video-card': true,
+        playing: isPlaying,
+      })}
+    >
+      {isPlaying && (
         <iframe
           src={`https://www.youtube.com/embed/${encodeURIComponent(
             id
@@ -39,11 +48,11 @@ export const VideoCard = ({
           className='video-embed'
         ></iframe>
       )}
-      {!showEmbedded && (
+      {!isPlaying && (
         <img
           src={thumbnail_url}
           className='video-thumbnail'
-          onClick={() => setShowEmbedded(true)}
+          onClick={startPlaying}
         />
       )}
       <a
