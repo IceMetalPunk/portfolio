@@ -9,7 +9,7 @@ const BASE_CLIENT_DIR = path.resolve(import.meta.dirname, '../../client/dist');
 server.use(express.static(BASE_CLIENT_DIR));
 
 server.use('/api', APIRouter);
-server.get('/', (_: Request, res: Response) => {
+server.get('/*path', (_: Request, res: Response) => {
   res.sendFile(path.resolve(BASE_CLIENT_DIR, 'index.html'));
 });
 server.listen(PORT, () => console.log(`Listening on port ${PORT}...`));

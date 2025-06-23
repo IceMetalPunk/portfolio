@@ -1,17 +1,35 @@
+import { Route, Routes } from 'react-router';
 import './App.css';
-import { TabSynthiaNova } from './tabs/SynthiaNova/TabSynthiaNova';
+import { Header } from './layout/Header';
+import { Sidebar } from './layout/Sidebar';
 import { TabFrame } from './tabs/TabFrame';
+import { TAB_ROUTES, type TabInfo } from './util/constants';
 
 function App() {
   return (
     <>
-      <TabFrame
-        projectName='Synthia Nova'
-        repoName='SynthiaNova'
-        description='A multi-model AI framework for inspiring, writing, and producing songs in a way similar to the human songwriting process.'
-      >
-        <TabSynthiaNova />
-      </TabFrame>
+      <Header />
+      <main>
+        <Sidebar />
+        <Routes>
+          {Object.entries(TAB_ROUTES).map(([path, info]: [string, TabInfo]) => {
+            return (
+              <Route
+                path={path}
+                element={
+                  <TabFrame
+                    projectName={info.projectName}
+                    repoName={info.repoName}
+                    description={info.description}
+                  >
+                    {info.tab}
+                  </TabFrame>
+                }
+              />
+            );
+          })}
+        </Routes>
+      </main>
     </>
   );
 }

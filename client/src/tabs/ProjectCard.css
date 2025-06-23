@@ -1,15 +1,16 @@
-.github-card img[src*='github-mark.svg'] {
+.project-card img[src*='github-mark.svg'] {
   height: 1em;
   aspect-ratio: 1/1;
   vertical-align: middle;
 }
-.github-card {
+.project-card {
+  width: 100%;
   text-align: start;
   font-size: 12pt;
   padding: 0.2em;
   padding-block-end: 0.5em;
   border-block-end: 1px solid currentColor;
 }
-.github-card .title {
+.project-card .title {
   font-weight: bold;
 }
