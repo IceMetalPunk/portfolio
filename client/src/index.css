@@ -97,6 +97,11 @@ main {
   background-color: var(--bg-color);
   word-wrap: none;
 }
+#main-tab-content {
+  display: grid;
+  grid-template-rows: 1fr 5fr;
+  max-height: calc((100vh - 50px - 1rem) * 0.9);
+}
 /* End custom styles */
 
 @media (prefers-color-scheme: light) {

@@ -15,14 +15,15 @@ export const TabFrame = ({
   children,
 }: TabFrameProps) => {
   return (
-    <>
-      <ProjectCard
-        projectName={projectName}
-        repoName={repoName}
-        description={description}
-      />
-      <br />
-      {children}
-    </>
+    <section id='main-tab-content'>
+      <div className='tab-header'>
+        <ProjectCard
+          projectName={projectName}
+          repoName={repoName}
+          description={description}
+        />
+      </div>
+      <div className='tab-body'>{children}</div>
+    </section>
   );
 };

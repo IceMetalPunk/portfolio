@@ -14,6 +14,7 @@
 }
 .video-card .video-thumbnail {
   max-width: 200px;
+  max-height: 112px;
   border-radius: 0.5em;
   cursor: pointer;
 }

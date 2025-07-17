@@ -1,8 +1,8 @@
-import './TabSynthiaNova.css';
 import { useCallback, useState } from 'react';
 import { useFetchJson } from '../../util/util';
-import { VideoCard } from './VideoCard';
 import { LyricsPanel, type LyricsPanelProps } from './LyricsPanel';
+import './TabSynthiaNova.css';
+import { VideoCard } from './VideoCard';
 
 type VideoResult = {
   id: string;
@@ -37,12 +37,12 @@ export const TabSynthiaNova = () => {
     '/api/getLatestVideos',
     fetchParams
   );
-  const changePage = useCallback((amount: number) => {
+  const changePage = useCallback((amount: number, relative: boolean = true) => {
     setNowPlayingId('');
     setFetchParams((previous) => {
       return {
         ...previous,
-        page: (parseInt(previous.page) + amount).toString(),
+        page: (relative ? parseInt(previous.page) + amount : amount).toString(),
       };
     });
   }, []);
@@ -76,12 +76,17 @@ export const TabSynthiaNova = () => {
         })}
         <div className='video-card-footer'>
           {parseInt(fetchParams.page) > 1 && (
-            <a onClick={() => changePage(-1)}>«</a>
+            <>
+              <a onClick={() => changePage(1, false)}>«</a>&nbsp;
+              <a onClick={() => changePage(-1)}>‹</a>&nbsp;
+            </>
           )}
           Page {fetchParams.page}
           {(videoResults as Array<VideoResult>).length >=
             parseInt(fetchParams.limit) && (
-            <a onClick={() => changePage(1)}>»</a>
+            <>
+              &nbsp;<a onClick={() => changePage(1)}>›</a>
+            </>
           )}
         </div>
       </div>
