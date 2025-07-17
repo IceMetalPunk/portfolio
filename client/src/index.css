@@ -83,19 +83,35 @@ main {
   width: 100%;
   z-index: 0;
 }
-#sidebar {
+#sidebar-container {
   position: fixed;
   left: 0px;
   top: calc(50px + 2rem);
-  width: 0px;
   height: 100%;
+}
+#sidebar-container .link {
+  cursor: pointer;
+}
+#sidebar-container .opener {
   padding-inline: 1rem;
+}
+#sidebar {
+  width: 0px;
+  padding-inline: 0;
   border-right: 1px solid var(--light-border-color);
-  transition: width 0.25s linear;
+  transition: width 0.25s linear, padding-inline 0.25s linear;
   overflow: clip;
   z-index: 1;
   background-color: var(--bg-color);
   word-wrap: none;
+}
+#sidebar.open {
+  padding-inline: 1rem;
+  width: 100px;
+}
+#sidebar ul {
+  padding-inline: 0;
+  list-style: none;
 }
 #main-tab-content {
   display: grid;
