@@ -7,7 +7,7 @@
   width: 100%;
   text-align: start;
   font-size: 12pt;
-  padding: 0.2em;
+  padding-block: 0.2em;
   padding-block-end: 0.5em;
   border-block-end: 1px solid currentColor;
 }

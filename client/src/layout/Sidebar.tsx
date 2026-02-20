@@ -39,7 +39,7 @@ export const Sidebar = () => {
           open: isOpen,
         })}
       >
-        <a onClick={() => setOpen(false)} className='link'>
+        <a onClick={() => setOpen(false)} className='closer link'>
           ☰
         </a>
         <ul>

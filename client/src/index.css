@@ -109,6 +109,10 @@ main {
   padding-inline: 1rem;
   width: 100px;
 }
+#sidebar > a.closer {
+  display: block;
+  text-align: left;
+}
 #sidebar ul {
   padding-inline: 0;
   list-style: none;
