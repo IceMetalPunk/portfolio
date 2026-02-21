@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Header } from './layout/Header';
 import { Sidebar } from './layout/Sidebar';
 import { TabFrame } from './tabs/TabFrame';
@@ -20,6 +21,7 @@ function App() {
                   <TabFrame
                     projectName={info.projectName}
                     repoName={info.repoName}
+                    projectIcon={info.projectIcon}
                     description={info.description}
                   >
                     {info.tab}

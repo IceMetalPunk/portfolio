@@ -1,10 +1,12 @@
-import type { JSX } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { ProjectCard } from './ProjectCard';
+import './TabFrame.css';
 
 interface TabFrameProps {
   projectName: string;
   repoName?: string;
   description?: string;
+  projectIcon?: ReactNode;
   children: JSX.Element;
 }
 
@@ -13,6 +15,7 @@ export const TabFrame = ({
   repoName,
   description,
   children,
+  projectIcon,
 }: TabFrameProps) => {
   return (
     <section id='main-tab-content'>
@@ -20,6 +23,7 @@ export const TabFrame = ({
         <ProjectCard
           projectName={projectName}
           repoName={repoName}
+          projectIcon={projectIcon}
           description={description}
         />
       </div>
