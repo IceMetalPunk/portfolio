@@ -16,6 +16,7 @@ function App() {
           {Object.entries(TAB_ROUTES).map(([path, info]: [string, TabInfo]) => {
             return (
               <Route
+                key={path}
                 path={path}
                 element={
                   <TabFrame
