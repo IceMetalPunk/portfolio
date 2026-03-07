@@ -1,5 +1,6 @@
 import HeaderLogo from '../assets/Portfolio_Logo.png';
 import { useEffect, useCallback } from 'react';
+import { Link } from 'react-router';
 
 export const Header = () => {
   const resizeHeader = useCallback(() => {
@@ -16,7 +17,9 @@ export const Header = () => {
 
   return (
     <header>
-      <img src={HeaderLogo} />
+      <Link to='/'>
+        <img src={HeaderLogo} />
+      </Link>
     </header>
   );
 };

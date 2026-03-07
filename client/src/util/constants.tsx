@@ -6,6 +6,9 @@ import { CgPokemon } from 'react-icons/cg';
 import { LuBrain } from 'react-icons/lu';
 import { IoCubeOutline } from 'react-icons/io5';
 import { TbGhost2, TbCubePlus, TbBrandMinecraft } from 'react-icons/tb';
+import { MdOutlineContactPage } from 'react-icons/md';
+import { RiPagesLine } from 'react-icons/ri';
+
 import { TabSnapLocationMaker } from '../tabs/SnapLocationMaker/TabSnapLocationMaker';
 import { TabSoulLinkCalculator } from '../tabs/SoulLinkCalculator/TabSoulLinkCalculator';
 import { TabEnliven } from '../tabs/Enliven/TabEnliven';
@@ -16,23 +19,30 @@ import { TabTotemEssentials } from '../tabs/Totem Essentials/TabTotemEssentials'
 import { TabRedPlus } from '../tabs/RedPlus/TabRedPlus';
 import { TabRedPlusPlus } from '../tabs/RedPlusPlus/TabRedPlusPlus';
 import { TabStarChess } from '../tabs/Star Chess/TabStarChess';
+import { TabPortfolio } from '../tabs/Portfolio/TabPortfolio';
+import { TabResume } from '../tabs/Resume/TabResume';
 
 export interface TabInfo {
   projectName: string;
   repoName?: string;
-  description: string;
+  description?: string;
   projectIcon?: ReactNode;
   tab: JSX.Element;
 }
 
 export const TAB_ROUTES: Record<string, TabInfo> = {
   '/': {
-    projectName: 'Synthia Nova',
-    repoName: 'SynthiaNova',
-    projectIcon: <LiaMicrophoneAltSolid />,
+    projectName: 'Portfolio',
+    repoName: 'portfolio',
+    projectIcon: <MdOutlineContactPage />,
     description:
-      'A multi-model AI framework for inspiring, writing, and producing songs in a way similar to the human songwriting process.',
-    tab: <TabSynthiaNova />,
+      'This website for my portfolio, serving as an added example of my full stack development skillset.',
+    tab: <TabPortfolio />,
+  },
+  resume: {
+    projectName: 'Resumé',
+    projectIcon: <RiPagesLine />,
+    tab: <TabResume />,
   },
   'synthia-nova': {
     projectName: 'Synthia Nova',

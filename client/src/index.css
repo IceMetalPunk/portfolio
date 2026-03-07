@@ -137,9 +137,11 @@ main {
   list-style: none;
 }
 #main-tab-content {
+  max-height: calc((100vh - var(var(--header-height)) - 1rem) * 0.9);
+}
+#main-tab-content.has-project {
   display: grid;
   grid-template-rows: 1fr 5fr;
-  max-height: calc((100vh - var(var(--header-height)) - 1rem) * 0.9);
 }
 /* End custom styles */
 

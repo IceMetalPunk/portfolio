@@ -1,3 +1,14 @@
 .tab-header {
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.has-project .tab-header {
   max-width: 50%;
+  display: block;
+}
+.tab-header .basic-title {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
