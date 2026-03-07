@@ -1,5 +1,4 @@
 import './LyricsPanel.css';
-// import classNames from 'classnames';
 import { decode } from 'html-entities';
 import { useMemo } from 'react';
 import { Offcanvas } from 'react-bootstrap';
@@ -56,17 +55,5 @@ export const LyricsPanel = ({
       <Offcanvas.Body></Offcanvas.Body>
       <section className='lyric-body'>{lyrics.trim()}</section>
     </Offcanvas>
-    // <div
-    //   className={classNames({
-    //     'lyric-panel': true,
-    //     open,
-    //   })}
-    // >
-    //   <a className='close-button' onClick={() => togglePanelCallback?.()}>
-    //     ❌
-    //   </a>
-    //   <strong>{title}</strong>
-    //   <div className='lyrics'>{lyrics.trim()}</div>
-    // </div>
   );
 };

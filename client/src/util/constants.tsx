@@ -30,6 +30,7 @@ export interface TabInfo {
   tab: JSX.Element;
 }
 
+// TODO: Add screenshots, info, etc. to all project pages
 export const TAB_ROUTES: Record<string, TabInfo> = {
   '/': {
     projectName: 'Portfolio',
