@@ -1,6 +1,6 @@
 import { LightboxImage } from '../../util/LightboxImage';
 import './TabEubert2.css';
-// TODO: Lightbox gallery?
+
 export const TabEubert2 = () => {
   return (
     <>

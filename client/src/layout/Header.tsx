@@ -1,4 +1,3 @@
-// TODO: Add Dark Mode toggle w/ localStorage
 import HeaderLogo from '../assets/Portfolio_Logo.png';
 import { useEffect, useCallback } from 'react';
 import { Link } from 'react-router';
