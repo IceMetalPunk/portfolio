@@ -154,6 +154,17 @@ main {
 .image-gallery .lightbox-image {
   max-width: 75%;
 }
+footer {
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  padding-block: 2px;
+  border-top: 1px solid rgb(from currentColor r g b / 0.5);
+  background-color: rgb(from var(--bg-color) r g b / 0.8);
+  z-index: 4;
+}
 /* End custom styles */
 
 @media (prefers-color-scheme: light) {

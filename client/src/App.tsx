@@ -5,8 +5,17 @@ import { Header } from './layout/Header';
 import { Sidebar } from './layout/Sidebar';
 import { TabFrame } from './tabs/TabFrame';
 import { TAB_ROUTES, type TabInfo } from './util/constants';
+import { useMemo } from 'react';
 
 function App() {
+  const copyrightDateString: string = useMemo(() => {
+    const currentYear: number = new Date().getFullYear();
+    if (currentYear > 2026) {
+      return `2026-${currentYear}`;
+    }
+    return '2026';
+  }, []);
+
   return (
     <>
       <Header />
@@ -33,6 +42,7 @@ function App() {
           })}
         </Routes>
       </main>
+      <footer>&copy; {copyrightDateString} Kevin Burns</footer>
     </>
   );
 }
