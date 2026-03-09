@@ -141,7 +141,18 @@ main {
 }
 #main-tab-content.has-project {
   display: grid;
-  grid-template-rows: 1fr 5fr;
+  grid-template-rows: 1fr auto;
+}
+.lightbox-image {
+  cursor: pointer;
+}
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
+  justify-items: center;
+}
+.image-gallery .lightbox-image {
+  max-width: 75%;
 }
 /* End custom styles */
 

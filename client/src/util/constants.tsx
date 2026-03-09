@@ -5,7 +5,12 @@ import { GiCardRandom, GiOBrick, GiTotem, GiBeveledStar } from 'react-icons/gi';
 import { CgPokemon } from 'react-icons/cg';
 import { LuBrain } from 'react-icons/lu';
 import { IoCubeOutline } from 'react-icons/io5';
-import { TbGhost2, TbCubePlus, TbBrandMinecraft } from 'react-icons/tb';
+import {
+  TbGhost2,
+  TbCubePlus,
+  TbBrandMinecraft,
+  TbBrandAppleArcade,
+} from 'react-icons/tb';
 import { MdOutlineContactPage } from 'react-icons/md';
 import { RiPagesLine } from 'react-icons/ri';
 
@@ -21,6 +26,7 @@ import { TabRedPlusPlus } from '../tabs/RedPlusPlus/TabRedPlusPlus';
 import { TabStarChess } from '../tabs/Star Chess/TabStarChess';
 import { TabPortfolio } from '../tabs/Portfolio/TabPortfolio';
 import { TabResume } from '../tabs/Resume/TabResume';
+import { TabEubert2 } from '../tabs/Eubert2/TabEubert2';
 
 export interface TabInfo {
   projectName: string;
@@ -132,5 +138,13 @@ export const TAB_ROUTES: Record<string, TabInfo> = {
     description:
       'Game jam entry 2011, 2nd place of 36: A puzzle platformer where the screen wraps, but quadrants can be swapped around independently, letting you rearrange the level itself to try and get to the exit door.',
     tab: <TabSophiasSpirits />,
+  },
+  'eubert-2-must-die': {
+    projectName: 'Eubert 2 Must Die',
+    repoName: 'https://icemetalpunk.itch.io/eubert-2-must-die',
+    projectIcon: <TbBrandAppleArcade />,
+    description:
+      'Itch.io Weekly Game Jam entry in August 2020: An arcade-style homae to Q*Bert following the themes of "retro" and "nothing stays forever".',
+    tab: <TabEubert2 />,
   },
 };
