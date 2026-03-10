@@ -12,6 +12,10 @@ export const TabPortfolio = () => {
         and backend, collectively.
       </p>
       <p>
+        Use the ☰ button in the top-left corner to navigate to all my projects'
+        details pages.
+      </p>
+      <p>
         This site was created with Node + Typescript + Express for the backend,
         Postgres (hosted by Supabase) for the data store, and Vite + React +
         Typescript for the frontend.
