@@ -1,7 +1,8 @@
 import './LyricsPanel.css';
-import classNames from 'classnames';
 import { decode } from 'html-entities';
 import { useMemo } from 'react';
+import { Offcanvas } from 'react-bootstrap';
+import { IoMdMusicalNote } from 'react-icons/io';
 
 export interface LyricsPanelProps {
   fullTitle: string;
@@ -37,17 +38,22 @@ export const LyricsPanel = ({
   );
 
   return (
-    <div
-      className={classNames({
-        'lyric-panel': true,
-        open,
-      })}
+    <Offcanvas
+      show={open}
+      onHide={togglePanelCallback}
+      placement='end'
+      backdrop={false}
+      scroll={true}
     >
-      <a className='close-button' onClick={() => togglePanelCallback?.()}>
-        ❌
-      </a>
-      <strong>{title}</strong>
-      <div className='lyrics'>{lyrics.trim()}</div>
-    </div>
+      <Offcanvas.Header closeButton>
+        <Offcanvas.Title>
+          <strong>
+            <IoMdMusicalNote /> {title}
+          </strong>
+        </Offcanvas.Title>
+      </Offcanvas.Header>
+      <Offcanvas.Body></Offcanvas.Body>
+      <section className='lyric-body'>{lyrics.trim()}</section>
+    </Offcanvas>
   );
 };
