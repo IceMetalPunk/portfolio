@@ -2,7 +2,6 @@ import './TabResume.css';
 import Resume from '../../assets/resume.pdf';
 import { Link } from 'react-router';
 
-// TODO: Update resume PDF! (Make sure to fix dates of previous jobs!)
 export const TabResume = () => {
   return (
     <>
