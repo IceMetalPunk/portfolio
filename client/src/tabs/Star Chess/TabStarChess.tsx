@@ -1,4 +1,7 @@
+import { LightboxImage } from '../../util/LightboxImage';
 import './TabStarChess.css';
+import MenuScreenshot from '../../assets/porject_samples/starchess_menu.png';
+import GameScreenshot from '../../assets/porject_samples/starchess_ingame.png';
 
 export const TabStarChess = () => {
   return (
@@ -13,6 +16,10 @@ export const TabStarChess = () => {
         Though the planned multiplayer sequel never happened, the original
         one-player vs AI version is complete.
       </p>
+      <section className='image-gallery'>
+        <LightboxImage title='Star Chess Menu' src={MenuScreenshot} />
+        <LightboxImage title='Star Chess Game Board' src={GameScreenshot} />
+      </section>
     </>
   );
 };

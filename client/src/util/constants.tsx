@@ -36,7 +36,6 @@ export interface TabInfo {
   tab: JSX.Element;
 }
 
-// TODO: Add screenshots, info, etc. to all project pages
 export const TAB_ROUTES: Record<string, TabInfo> = {
   '/': {
     projectName: 'Portfolio',
@@ -128,7 +127,7 @@ export const TAB_ROUTES: Record<string, TabInfo> = {
     repoName: 'Neonite-2',
     projectIcon: <IoCubeOutline />,
     description:
-      'A sequel to Neonite, developed around 2012/2013, that adds power-ups, a helpful HUD, improved graphics, and online highscores.',
+      'A sequel to Neonite, developed around 2012/2013, that adds more power-ups, a helpful HUD, improved graphics, and online highscores.',
     tab: <TabNeonite2 />,
   },
   'sophias-spirits': {
