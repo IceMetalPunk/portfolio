@@ -1,4 +1,5 @@
 .env
 node_modules/
+updater/data/
 
 notes.txt

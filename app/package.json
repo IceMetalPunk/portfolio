@@ -27,6 +27,8 @@
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.17",
     "@types/pg": "^8.15.1",
-    "typescript": "^5.8.3"
+    "@vitejs/plugin-react": "^6.0.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.3"
   }
 }

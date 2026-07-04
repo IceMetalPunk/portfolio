@@ -14,7 +14,8 @@ import { numericQueryParam, sanitizeDbValuesForHTML } from '../util/util.js';
 config();
 export const APIRouter: Router = Router();
 
-const connectionString = `postgresql://${process.env.SUPABASE_UN}:${process.env.SUPABASE_PW}@${process.env.SUPABASE_DOMAIN}:${process.env.SUPABASE_PORT}/${process.env.SUPABASE_DB}`;
+// const connectionString = `postgresql://${process.env.SUPABASE_UN}:${process.env.SUPABASE_PW}@${process.env.SUPABASE_DOMAIN}:${process.env.SUPABASE_PORT}/${process.env.SUPABASE_DB}`;
+const connectionString = process.env.DB_URL ?? '';
 const pool = new Pool({ connectionString });
 
 async function* getYouTubeResults<T extends YTSnippet>(
