@@ -24,6 +24,8 @@ services:
     environment:
       DB_URL: postgres://${DB_USERNAME}:${DB_PASSWORD}@postgres:${DB_PORT}/${DB_NAME}
       PORT: ${PORT}
+      YT_API_KEY: ${YT_API_KEY}
+      YT_CHANNEL_ID: ${YT_CHANNEL_ID}
     depends_on:
       postgres:
         condition: service_healthy
