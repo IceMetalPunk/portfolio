@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { encode, decode } from 'html-entities';
 import { QueryResult, QueryResultRow } from 'pg';
+import { Fields } from 'formidable';
 
 export const sanitizeDbValuesForHTML = (
   results: QueryResult<QueryResultRow>
@@ -39,3 +40,15 @@ export const numericQueryParam = (
   );
   return isNaN(queryValue) || !isFinite(queryValue) ? defaultValue : queryValue;
 };
+
+export const prepareFormFields = (fields: Fields<string>, expected: string[], required: string[] = []) => {
+  const results: Record<string, string | null> = {};
+  const allFields: Set<string> = new Set(expected.concat(required));
+  if (required.some((key: string) => !fields.hasOwnProperty(key))) {
+    return {};
+  }
+  for (let field of allFields) {
+    results[field] = fields[field] ? fields[field][0] : null;
+  }
+  return results;
+}

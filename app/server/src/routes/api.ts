@@ -2,6 +2,7 @@ import { config } from 'dotenv';
 import { Request, Response, Router } from 'express';
 import { Pool, QueryResult, QueryResultRow } from 'pg';
 import {
+  Nullable,
   YTResultItem,
   YTResultsGenerator,
   YTSnippet,
@@ -10,13 +11,37 @@ import {
   YTVideoId,
   YTVideoSnippet,
 } from 'types.js';
-import { numericQueryParam, sanitizeDbValuesForHTML } from '../util/util.js';
+import { numericQueryParam, prepareFormFields, sanitizeDbValuesForHTML } from '../util/util.js';
+import formidable, { Fields, Files } from 'formidable';
 config();
 export const APIRouter: Router = Router();
+const formHandler = formidable();
 
 // const connectionString = `postgresql://${process.env.SUPABASE_UN}:${process.env.SUPABASE_PW}@${process.env.SUPABASE_DOMAIN}:${process.env.SUPABASE_PORT}/${process.env.SUPABASE_DB}`;
 const connectionString = process.env.DB_URL ?? '';
 const pool = new Pool({ connectionString });
+
+async function sendEmail(body: string, subject: Nullable<string>, name: Nullable<string>, reply_to: Nullable<string>): Promise<string> {
+  const data: FormData = new FormData();
+  data.append('service_id', process.env.EMAIL_SERVICE!);
+  data.append('template_id', process.env.EMAIL_TEMPLATE!);
+  data.append('user_id', process.env.EMAIL_PUBLIC_KEY!);
+  data.append('accessToken', process.env.EMAIL_PRIVATE_KEY!);
+
+  data.append('title', subject || '(No Subject)');
+  data.append('name', name || 'Anonymous');
+  if (reply_to) {
+    data.append('email', reply_to);
+  }
+  data.append('message', body);
+
+  const res: globalThis.Response = await fetch('https://api.emailjs.com/api/v1.0/email/send-form', {
+    method: 'POST',
+    body: data
+  });
+  const result: string = await res.text();
+  return (result === 'OK') ? '' : result;
+}
 
 async function* getYouTubeResults<T extends YTSnippet>(
   url: string,
@@ -182,3 +207,22 @@ APIRouter.get('/getLatestVideos', async (req: Request, res: Response) => {
   sanitizeDbValuesForHTML(allVideos);
   res.json(allVideos.rows);
 });
+
+APIRouter.post('/sendContact', async (req, res) => {
+  const [fields, _]: [Fields<string>, Files<string>] = await formHandler.parse(req);
+  if (!fields?.body) {
+    res.json({ success: false, error: 'You must enter a message.' });
+    return;
+  }
+  const preparedFields = prepareFormFields(fields, ['body', 'subject', 'name', 'reply_to'], ['body']);
+  if (!preparedFields) {
+    res.json({ success: false, error: 'You must enter a message.' });
+    return;
+  }
+  const result: string = await sendEmail(preparedFields.body!, preparedFields.subject, preparedFields.name, preparedFields.reply_to);
+  if (!result) {
+    res.json({ success: true });
+    return;
+  }
+  res.json({ success: false, error: result });
+})

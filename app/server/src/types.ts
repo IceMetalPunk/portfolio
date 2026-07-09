@@ -52,3 +52,5 @@ export type YTResultsGenerator<T extends YTSnippet> = AsyncGenerator<
   void,
   void
 >;
+
+export type Nullable<T> = T | null | undefined;
