@@ -26,6 +26,10 @@ services:
       PORT: ${PORT}
       YT_API_KEY: ${YT_API_KEY}
       YT_CHANNEL_ID: ${YT_CHANNEL_ID}
+      EMAIL_SERVICE: ${EMAIL_SERVICE}
+      EMAIL_TEMPLATE: ${EMAIL_TEMPLATE}
+      EMAIL_PUBLIC_KEY: ${EMAIL_PUBLIC_KEY}
+      EMAIL_PRIVATE_KEY: ${EMAIL_PRIVATE_KEY}
     depends_on:
       postgres:
         condition: service_healthy

@@ -12,6 +12,7 @@ import {
   TbBrandAppleArcade,
 } from 'react-icons/tb';
 import { MdOutlineContactPage } from 'react-icons/md';
+import { MdOutlineEmail } from "react-icons/md";
 import { RiPagesLine } from 'react-icons/ri';
 
 import { TabSnapLocationMaker } from '../tabs/SnapLocationMaker/TabSnapLocationMaker';
@@ -26,6 +27,7 @@ import { TabRedPlusPlus } from '../tabs/RedPlusPlus/TabRedPlusPlus';
 import { TabStarChess } from '../tabs/Star Chess/TabStarChess';
 import { TabPortfolio } from '../tabs/Portfolio/TabPortfolio';
 import { TabResume } from '../tabs/Resume/TabResume';
+import { TabContactUs } from '../tabs/ContactUs/TabContactUs';
 import { TabEubert2 } from '../tabs/Eubert2/TabEubert2';
 
 export interface TabInfo {
@@ -49,6 +51,11 @@ export const TAB_ROUTES: Record<string, TabInfo> = {
     projectName: 'Resumé',
     projectIcon: <RiPagesLine />,
     tab: <TabResume />,
+  },
+  'contact-us': {
+    projectName: 'Contact Us',
+    projectIcon: <MdOutlineEmail />,
+    tab: <TabContactUs />
   },
   'synthia-nova': {
     projectName: 'Synthia Nova',

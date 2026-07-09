@@ -1,0 +1,33 @@
+.error {
+  color: #aa0000;
+}
+
+.feedback {
+  font-weight: bold;
+  margin-block: 0.5em;
+}
+
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+form input[type="text"], form textarea, form select {
+  width: 100%;
+}
+
+form .full-width-row {
+  grid-column: 1 / -1;
+}
+
+form fieldset {
+  all: revert;
+}
+
+form legend {
+  all: revert;
+}
+
+form input[disabled],
+form textarea[disabled] {
+  cursor: not-allowed;
+}
